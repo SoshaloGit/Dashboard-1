@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <style>
+        body {
+            font-family: 'Century Gothic', sans-serif;
+            background-color: aliceblue;
+            margin: 0;
+            padding: 0;
+            display: flex;
+        }
+        .sidebar {
+            width: 250px;
+            background-color: rgb(255, 255, 255);
+            color: #2c3e50;
+            height: 100vh;
+            padding: 20px;
+            position: relative;
+            transition: width 0.3s;
+        }
+        .sidebar h1 {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: rgb(0, 195, 255);
+            margin-left: 50px;
+        }
+        .profile {
+            display: flex;
+            align-items: center;
+            margin: 25px 0;
+            margin-left: 25px;
+            cursor: pointer;
+        }
+        .profile img {
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            margin-right: 10px;
+        }
+        .profile-info {
+            display: flex;
+            flex-direction: column;
+            margin-left: 10px;
+        }
+        .profile-info p {
+            margin: 0;
+        }
+        .username {
+            font-weight: bold;
+        }
+        .links {
+            margin-top: 20px;
+            margin-left: 25px;
+        }
+        .link {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            color: #2c3e50;
+            text-decoration: none;
+        }
+        .active {
+            color: rgb(0, 195, 255);
+            font-weight: bold;
+        }
+        .icon {
+            margin-left: 10px;
+            margin-right: 20px;
+        }
+        .add-event-button {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 10px;
+            margin-top: 30px;
+            width: 200px;
+            margin-left: 26px;
+            background-color: rgb(0, 195, 255);
+            color: white;
+            text-decoration: none;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .add-event-button:hover {
+            background-color: rgb(0, 150, 200);
+        }
+        .content {
+            flex: 1;
+            padding: 20px;
+        }
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            background-color: white;
+            padding: 3px 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .search-container {
+            display: flex;
+            align-items: center;
+        }
+        .search-container input {
+            border: none;
+            border-bottom: 2px solid #ccc;
+            outline: none;
+            padding: 5px;
+            margin-left: 10px;
+        }
+        .search-container .search-icon {
+            font-size: 1.2em;
+            color: #2c3e50;
+        }
+        .top-bar .profile {
+            display: flex;
+            align-items: center;
+            position: relative;
+        }
+        .top-bar .profile img {
+            width: 30px;
+            height: 30px;
+            border: 1px solid black;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+        .top-bar .profile p {
+            margin: 0;
+            font-weight: bold;
+        }
+        .top-bar .profile .dropdown-icon {
+            cursor: pointer;
+            font-size: 1.2em;
+            margin-left: 10px;
+        }
+        .top-bar .profile .dropdown {
+            display: none;
+            position: absolute;
+            top: 35px;
+            right: 0;
+            background-color: white;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        .top-bar .profile .dropdown a {
+            display: block;
+            padding: 10px;
+            color: black;
+            font-weight: bold;
+            background-color: rgb(0, 195, 255);
+            text-decoration: none;
+        }
+        .top-bar .profile .dropdown a:hover {
+            background-color: rgb(0, 100, 150);
+        }
+        .top-bar .profile .dropdown.show {
+            display: block;
+        }
+        .top-bar .icons {
+            display: flex;
+            align-items: center;
+        }
+        .top-bar .icons a {
+            color: #2c3e50;
+            text-decoration: none;
+            font-size: 1.2em;
+            margin-left: 20px;
+        }
+        .dashboard-heading {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .dashboard-heading h2 {
+            margin: 0;
+            margin-left: 10px;
+            color: rgb(0, 195, 255);
+        }
+        .dashboard-container {
+            margin-top: 60px;
+            display: flex;
+            justify-content: space-between;
+        }
+        .dashboard-card {
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            flex: 1;
+            margin-right: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            position: relative;
+            color: white;
+        }
+        .dashboard-card:last-child {
+            margin-right: 0;
+        }
+        .dashboard-card .icon-container {
+            position: absolute;
+            top: -30px;
+            background-color: rgb(255, 255, 255);
+            border: 1px solid black;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 2em;
+        }
+        .dashboard-card.total-sales {
+            background-color: rgb(0, 195, 255);
+        }
+        .dashboard-card.new-orders {
+            background-color: rgb(0, 150, 200);
+        }
+        .dashboard-card.new-users {
+            background-color: rgb(0, 100, 150);
+        }
+        .dashboard-card .name {
+            font-size: 1.2em;
+            margin-bottom: 10px;
+            font-weight: bold;
+            margin-top: 40px;
+        }
+        .dashboard-card .amount {
+            font-size: 1.5em;
+            margin-bottom: 10px;
+        }
+        .dashboard-card .percentage {
+            font-weight: bold;
+        }
+        .user-table-container {
+            margin-top: 40px;
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .user-table-container table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .user-table-container table th,
+        .user-table-container table td {
+            padding: 10px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+        .user-table-container table th {
+            background-color: rgb(0, 195, 255);
+            color: white;
+        }
+        .pagination {
+            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+        }
+        .pagination button {
+            padding: 10px 15px;
+            border: none;
+            background-color: rgb(0, 195, 255);
+            color: white;
+            cursor: pointer;
+            margin: 0 5px;
+            border-radius: 5px;
+        }
+        .pagination button:hover {
+            background-color: rgb(0, 150, 200);
+        }
+        .pagination button:disabled {
+            background-color: #ddd;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar" id="sidebar">
+        <h1>KWITHU</h1>
+        <div class="profile" onclick="window.location.href='user_profile.html'">
+            <img src="profile.jpg" alt="Profile Picture">
+            <div class="profile-info">
+                <p class="username">Soshalo Montana</p>
+                <p>Adminstrator</p>
+            </div>
+        </div>
+        <div class="links">
+            <a href="#" class="link" onclick="setActive(this)">Dashboard <span class="icon">🏠</span></a>
+            <a href="#" class="link" onclick="setActive(this)">Sales Manager <span class="icon">📊</span></a>
+            <a href="#" class="link" onclick="setActive(this)">Orders Manager <span class="icon">🛒</span></a>
+            <a href="#" class="link" onclick="setActive(this)">User Manager <span class="icon">👥</span></a>
+            <a href="#" class="link" onclick="setActive(this)">Inventory Manager <span class="icon">📦</span></a>
+            <a href="#" class="link" onclick="setActive(this)">Reports <span class="icon">📈</span></a>
+            <a href="#" class="link" onclick="setActive(this)">Settings <span class="icon">⚙️</span></a>
+            <a href="#" class="link" onclick="setActive(this)">Logout <span class="icon">🚪</span></a>
+        </div>
+        <button class="add-event-button" onclick="window.location.href='add_event.html'">Add Event <span class="icon">➕</span></button>
+    </div>
+    <div class="content">
+        <div class="top-bar">
+            <div class="search-container">
+                <span class="search-icon">&#x1F50D;</span>
+                <input type="text" placeholder="Search">
+            </div>
+            <div class="profile">
+                <img src="profile.jpg" alt="Profile Picture">
+                <p>SOSHALO</p>
+                <span class="dropdown-icon">&#x25BC;</span>
+                <div class="dropdown">
+                    <a href="profile.html">Profile</a>
+                    <a href="logout.html">Logout</a>
+                </div>
+            </div>
+            <div class="icons">
+                <a href="#">&#x1F514;</a>
+                <a href="#">&#x2709;</a>
+                <a href="#">&#x1F50D;</a>
+            </div>
+        </div>
+        <div class="dashboard-heading">
+            <span class="icon">🏠</span>
+            <h2>Dashboard</h2>
+        </div>
+        <div class="dashboard-container">
+            <div class="dashboard-card total-sales">
+                <div class="icon-container">&#x1F4B0;</div>
+                <div class="name">Total Sales</div>
+                <div class="amount">$12,345</div>
+                <div class="percentage">+5% from last month</div>
+            </div>
+            <div class="dashboard-card new-orders">
+                <div class="icon-container">&#x1F6D2;</div>
+                <div class="name">New Orders</div>
+                <div class="amount">123</div>
+                <div class="percentage">+10% from last month</div>
+            </div>
+            <div class="dashboard-card new-users">
+                <div class="icon-container">&#x1F465;</div>
+                <div class="name">New Users</div>
+                <div class="amount">45</div>
+                <div class="percentage">+20% from last month</div>
+            </div>
+        </div>
+        <div class="user-table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th><input type="checkbox" onclick="toggleAllCheckboxes(this)"></th>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>User Type</th>
+                        <th>Joined</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Example rows, replace with dynamic data -->
+                    <tr>
+                        <td><input type="checkbox"></td>
+                        <td>Soshalo Montana</td>
+                        <td>soshalo@example.com</td>
+                        <td>Admin</td>
+                        <td>2023-01-01</td>
+                        <td>Active</td>
+                    </tr>
+                    <tr>
+                        <td><input type="checkbox"></td>
+                        <td>Jane Smith</td>
+                        <td>jane@example.com</td>
+                        <td>User</td>
+                        <td>2023-01-10</td>
+                        <td>Inactive</td>
+                    </tr>
+                    <tr>
+                        <td><input type="checkbox"></td>
+                        <td>Jane Smith</td>
+                        <td>jane@example.com</td>
+                        <td>User</td>
+                        <td>2023-01-10</td>
+                        <td>Inactive</td>
+                    </tr>
+                    <tr>
+                        <td><input type="checkbox"></td>
+                        <td>Jane Smith</td>
+                        <td>jane@example.com</td>
+                        <td>User</td>
+                        <td>2023-01-10</td>
+                        <td>Inactive</td>
+                    </tr>
+                    <tr>
+                        <td><input type="checkbox"></td>
+                        <td>Jane Smith</td>
+                        <td>jane@example.com</td>
+                        <td>User</td>
+                        <td>2023-01-10</td>
+                        <td>Inactive</td>
+                    </tr>
+                    
+                    <!-- Add more rows as needed -->
+                </tbody>
+            </table>
+            <div class="pagination">
+                <button onclick="previousPage()" disabled>&laquo; Previous</button>
+                <button onclick="nextPage()">Next &raquo;</button>
+            </div>
+        </div>
+    </div>
+    <script>
+        //
+        function setActive(link) {
+            var links = document.querySelectorAll('.link');
+            links.forEach(function (link) {
+                link.classList.remove('active');
+            });
+            link.classList.add('active');
+        }
+
+        // JavaScript to toggle dropdown menu
+        document.querySelector('.dropdown-icon').addEventListener('click', function () {
+            document.querySelector('.dropdown').classList.toggle('show');
+        });
+
+        // JavaScript to toggle all checkboxes
+        function toggleAllCheckboxes(source) {
+            const checkboxes = document.querySelectorAll('tbody input[type="checkbox"]');
+            checkboxes.forEach(checkbox => {
+                checkbox.checked = source.checked;
+            });
+        }
+
+        // JavaScript for pagination (add your logic here)
+        function previousPage() {
+            // Logic to go to the previous page
+        }
+
+        function nextPage() {
+            // Logic to go to the next page
+        }
+    </script>
+</body>
+</html>
